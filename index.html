@@ -4,64 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
   <meta name="theme-color" content="#0a0a0f">
-  <meta name="description" content="studyPro - UP Board Class 12 Study & Entertainment Hub">
+  <meta name="description" content="studyPro - UP Board Class 12 Study App with Social Feed & Mock Tests">
   <title>studyPro — UP Board Class 12</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter','sans-serif'], display: ['Space Grotesk','sans-serif'] },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif']
+          },
           colors: {
             app: {
-              bg: 'var(--app-bg)', surface: 'var(--app-surface)', surface2: 'var(--app-surface2)',
-              border: 'var(--app-border)', text: 'var(--app-text)', textMuted: 'var(--app-text-muted)',
-              textDim: 'var(--app-text-dim)', accent: 'var(--app-accent)', accentSoft: 'var(--app-accent-soft)',
-              danger: 'var(--app-danger)', success: 'var(--app-success)',
+              bg: 'var(--app-bg)',
+              surface: 'var(--app-surface)',
+              surface2: 'var(--app-surface2)',
+              border: 'var(--app-border)',
+              text: 'var(--app-text)',
+              textMuted: 'var(--app-text-muted)',
+              textDim: 'var(--app-text-dim)',
+              accent: 'var(--app-accent)',
+              accentSoft: 'var(--app-accent-soft)',
+              danger: 'var(--app-danger)',
+              success: 'var(--app-success)'
             }
           }
         }
       }
-    }
+    };
   </script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-golden antialiased">
 
-<!-- Firebase Load Error Screen -->
-<div id="firebase-error" class="hidden">
-  <div class="text-center space-y-4 max-w-sm">
+<!-- ========== FIREBASE ERROR SCREEN ========== -->
+<div id="firebase-error">
+  <div class="text-center space-y-4 max-w-sm px-6">
     <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
       <i class="fa-solid fa-triangle-exclamation text-2xl" style="color:var(--app-danger)"></i>
     </div>
     <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Connection Error</h2>
     <p class="text-sm" style="color:var(--app-text-muted)">Unable to connect to the studyPro servers. Please check your internet connection and try again.</p>
-    <button onclick="location.reload()" class="app-btn w-full"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button>
+    <button onclick="location.reload()" class="app-btn w-full" type="button">
+      <i class="fa-solid fa-rotate-right"></i><span>Retry</span>
+    </button>
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
+<!-- ========== AUTH SCREEN ========== -->
 <div id="auth-screen">
-  <div class="w-full max-w-sm mx-auto">
+  <div class="w-full max-w-sm px-6">
     <div class="text-center space-y-3 mb-8">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transition-all-300" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
         <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
       </div>
       <h1 class="text-4xl font-extrabold tracking-tight font-display gold-shimmer">studyPro</h1>
-      <p class="text-sm font-medium" style="color:var(--app-text-muted)">UP Board Class 12 • Study & Social Hub</p>
+      <p class="text-sm font-medium" style="color:var(--app-text-muted)">UP Board Class 12 &bull; Study + Social</p>
     </div>
 
+    <!-- Login Box -->
     <div id="login-box" class="auth-form-box space-y-4">
       <div class="text-center mb-2">
         <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Welcome Back</h2>
         <p class="text-xs mt-1" style="color:var(--app-text-dim)">Log in to continue your prep</p>
       </div>
-      <button id="google-login" type="button" class="app-btn app-btn-outline w-full transition-all-300">
+      <button id="google-login" type="button" class="app-btn app-btn-outline w-full">
         <i class="fa-brands fa-google"></i><span>Continue with Google</span>
       </button>
       <div class="flex items-center gap-3">
@@ -69,22 +82,23 @@
         <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
         <div class="flex-1 h-px" style="background:var(--app-border)"></div>
       </div>
-      <form id="login-form" class="space-y-3" onsubmit="return false;">
+      <form id="login-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
         <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
-        <button type="submit" id="login-submit" class="app-btn w-full mt-2 transition-all-300"><span>Log In</span></button>
+        <button type="submit" id="login-submit" class="app-btn w-full mt-2"><span>Log In</span></button>
       </form>
       <p class="text-center text-sm" style="color:var(--app-text-dim)">
-        New student? <button type="button" onclick="App.showRegister()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
+        New student? <button type="button" onclick="App.showRegister()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
       </p>
     </div>
 
+    <!-- Register Box -->
     <div id="register-box" class="auth-form-box hidden space-y-4">
       <div class="text-center mb-2">
         <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Create Account</h2>
         <p class="text-xs mt-1" style="color:var(--app-text-dim)">Join studyPro for UP Board prep</p>
       </div>
-      <button id="google-register" type="button" class="app-btn app-btn-outline w-full transition-all-300">
+      <button id="google-register" type="button" class="app-btn app-btn-outline w-full">
         <i class="fa-brands fa-google"></i><span>Sign up with Google</span>
       </button>
       <div class="flex items-center gap-3">
@@ -92,27 +106,35 @@
         <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
         <div class="flex-1 h-px" style="background:var(--app-border)"></div>
       </div>
-      <form id="register-form" class="space-y-3" onsubmit="return false;">
+      <form id="register-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
         <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
         <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
         <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
-        <select id="reg-class" class="app-input">
-          <option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option>
+        <select id="reg-class" class="app-input" style="appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27%2371717a%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/%3E%3C/svg%3E');background-repeat:no-repeat;background-position:right 14px center">
+          <option value="12">Class 12</option>
+          <option value="11">Class 11</option>
+          <option value="10">Class 10</option>
         </select>
-        <button type="submit" id="reg-submit" class="app-btn w-full mt-2 transition-all-300"><span>Create Account</span></button>
+        <button type="submit" id="reg-submit" class="app-btn w-full mt-2"><span>Create Account</span></button>
       </form>
       <p class="text-center text-sm" style="color:var(--app-text-dim)">
-        Already have an account? <button type="button" onclick="App.showLogin()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
+        Already have an account? <button type="button" onclick="App.showLogin()" class="font-bold underline" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
       </p>
     </div>
+
+    <p class="text-center text-xs leading-relaxed mt-6" style="color:var(--app-text-dim)">
+      By continuing, you agree to our <button type="button" onclick="App.openTerms(); return false;" class="underline" style="color:var(--app-text-muted);background:none;border:none;cursor:pointer">Terms</button> and <button type="button" onclick="return false;" class="underline" style="color:var(--app-text-muted);background:none;border:none;cursor:pointer">Privacy Policy</button>.
+    </p>
   </div>
 </div>
 
-<!-- APP SHELL -->
+<!-- ========== APP SHELL ========== -->
 <div id="app-shell" class="hidden h-full w-full flex-col">
+
+  <!-- Header -->
   <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header" style="border-color:var(--app-border)">
     <div class="flex items-center gap-3">
-      <button id="menu-btn" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)" aria-label="Open menu">
+      <button id="menu-btn" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)" aria-label="Open menu">
         <i class="fa-solid fa-bars text-sm" style="color:var(--app-text-muted)"></i>
       </button>
       <div>
@@ -120,30 +142,136 @@
         <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">UP Board</span>
       </div>
     </div>
-    <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
-      <span class="relative flex h-2.5 w-2.5">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:var(--app-success)"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:var(--app-success)"></span>
-      </span>
-      <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color:var(--app-text-muted)">Soon...</span>
+    <div class="flex items-center gap-3">
+      <!-- Notification Bell -->
+      <button id="notif-bell" type="button" class="relative w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)" aria-label="Notifications">
+        <i class="fa-solid fa-bell text-sm" style="color:var(--app-text-muted)"></i>
+        <span id="notif-dot" class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full border-2 hidden" style="background:var(--app-danger);border-color:var(--app-surface)"></span>
+      </button>
+      <!-- Exam Timer Badge -->
+      <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon" style="background:var(--app-surface2);border-color:var(--app-border)">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:var(--app-success)"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:var(--app-success)"></span>
+        </span>
+        <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color:var(--app-text-muted)">Soon...</span>
+      </div>
     </div>
   </header>
 
+  <!-- Main Content -->
   <main id="main-scroll" class="flex-1 relative">
-    <!-- HOME TAB -->
+
+    <!-- ===== HOME TAB ===== -->
     <section id="tab-home" class="tab-view active p-5 space-y-5 pb-24">
       <div class="animate-fade-up">
         <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">Welcome back</p>
         <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
       </div>
-      <!-- Stories -->
-      <div id="stories-bar" class="flex gap-4 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;"></div>
-      <!-- Feed -->
-      <div id="social-feed" class="space-y-5"></div>
+
+      <!-- Student Stories Row -->
+      <div id="stories-container" class="animate-fade-up delay-1">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Student Stories</p>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background:var(--app-accent-soft);color:var(--app-accent)">24h</span>
+        </div>
+        <div id="stories-row" class="flex gap-3 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
+          <div class="text-center flex-shrink-0">
+            <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center" style="background:var(--app-surface2);border:2px dashed var(--app-border)">
+              <i class="fa-solid fa-plus text-sm" style="color:var(--app-text-dim)"></i>
+            </div>
+            <p class="text-[10px] font-bold mt-1.5" style="color:var(--app-text-dim)">Add</p>
+          </div>
+          <!-- Stories injected by JS -->
+        </div>
+      </div>
+
+      <!-- Notice Board -->
+      <div class="app-card p-5 animate-fade-up delay-2 shadow-sm">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.2)">
+            <i class="fa-solid fa-bullhorn text-sm" style="color:#D4AF37"></i>
+          </div>
+          <h3 class="font-bold text-sm" style="color:var(--app-text)">Notice Board</h3>
+          <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(239,68,68,0.1);color:var(--app-danger);border:1px solid rgba(239,68,68,0.2)">URGENT</span>
+        </div>
+        <div id="notices-list" class="space-y-3">
+          <div class="flex gap-3 items-start">
+            <div class="w-2 h-2 rounded-full bg-amber-500 mt-2 shrink-0 shadow-sm shadow-amber-500/50"></div>
+            <div>
+              <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">Loading notices...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Feed Preview -->
+      <div class="app-card p-5 animate-fade-up delay-3 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2)">
+              <i class="fa-solid fa-rss text-sm" style="color:#3b82f6"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">From the Feed</h3>
+          </div>
+          <button type="button" onclick="App.switchTab('social')" class="text-[11px] font-bold px-3 py-1.5 rounded-lg border" style="background:var(--app-surface2);color:var(--app-accent);border-color:var(--app-border)">View All</button>
+        </div>
+        <div id="feed-preview" class="space-y-3">
+          <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading feed...</p>
+        </div>
+      </div>
+
+      <!-- Exam Date Sheet -->
+      <div class="app-card p-5 animate-fade-up delay-4 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
+              <i class="fa-solid fa-calendar-days text-violet-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Exam Date Sheet</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">UP Board</span>
+        </div>
+        <div id="datesheet-list" class="space-y-2">
+          <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading date sheet...</p>
+        </div>
+      </div>
+
+      <!-- Formula of the Day -->
+      <div class="app-card p-5 animate-fade-up delay-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2)">
+              <i class="fa-solid fa-square-root-variable text-blue-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Formula of the Day</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Daily</span>
+        </div>
+        <div id="formula-widget" class="space-y-2">
+          <p class="text-sm text-center py-4" style="color:var(--app-text-dim)">Loading formula...</p>
+        </div>
+      </div>
+
+      <!-- Word of the Day -->
+      <div class="app-card p-5 animate-fade-up delay-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2)">
+              <i class="fa-solid fa-spell-check text-violet-500 text-sm"></i>
+            </div>
+            <h3 class="font-bold text-sm" style="color:var(--app-text)">Word of the Day</h3>
+          </div>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Vocab</span>
+        </div>
+        <div id="word-widget" class="space-y-3">
+          <p class="text-sm text-center py-4" style="color:var(--app-text-dim)">Loading word...</p>
+        </div>
+      </div>
     </section>
 
-    <!-- STUDY TAB -->
-    <section id="tab-classes" class="tab-view p-5 space-y-4 pb-24">
+    <!-- ===== STUDY TAB ===== -->
+    <section id="tab-study" class="tab-view p-5 space-y-4 pb-24">
       <div class="flex items-center justify-between mb-1">
         <div>
           <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Study</h2>
@@ -151,7 +279,7 @@
         </div>
         <span class="text-[11px] font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Class 12</span>
       </div>
-      <div class="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none">
+      <div class="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
         <button type="button" onclick="App.filterSubject('all')" class="sub-tab-btn active" data-sub="all">All</button>
         <button type="button" onclick="App.filterSubject('Hindi')" class="sub-tab-btn" data-sub="Hindi">Hin</button>
         <button type="button" onclick="App.filterSubject('English')" class="sub-tab-btn" data-sub="English">Eng</button>
@@ -168,36 +296,118 @@
       </div>
     </section>
 
-    <!-- MEDIA TAB -->
+    <!-- ===== SOCIAL TAB ===== -->
+    <section id="tab-social" class="tab-view p-0 pb-24">
+      <!-- Social Header -->
+      <div class="sticky top-0 z-10 p-5 border-b glass-header" style="border-color:var(--app-border)">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Social</h2>
+            <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Connect with classmates</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="social-badge" class="hidden text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider" style="background:var(--app-accent-soft);color:var(--app-accent);border:1px solid var(--app-border)">VIP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stories Row -->
+      <div class="p-5 border-b" style="border-color:var(--app-border)">
+        <div class="flex gap-4 overflow-x-auto pb-2" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
+          <!-- My Story -->
+          <div class="text-center flex-shrink-0 cursor-pointer" onclick="App.openStoryCamera()">
+            <div class="w-16 h-16 rounded-full p-0.5" style="background:linear-gradient(135deg, var(--app-accent), #C0C0C0)">
+              <div class="w-full h-full rounded-full flex items-center justify-center" style="background:var(--app-surface);border:2px solid var(--app-surface)">
+                <i class="fa-solid fa-plus text-sm" style="color:var(--app-accent)"></i>
+              </div>
+            </div>
+            <p class="text-[10px] font-bold mt-1.5" style="color:var(--app-text-dim)">Your Story</p>
+          </div>
+          <!-- Stories injected by JS -->
+          <div id="social-stories-row" class="flex gap-4"></div>
+        </div>
+      </div>
+
+      <!-- Feed -->
+      <div id="social-feed" class="divide-y" style="border-color:var(--app-border)">
+        <p class="text-sm text-center py-12" style="color:var(--app-text-dim)">Loading feed...</p>
+      </div>
+    </section>
+
+    <!-- ===== MEDIA TAB ===== -->
     <section id="tab-media" class="tab-view p-5 space-y-4 pb-24">
       <div class="mb-2">
         <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Media</h2>
         <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Search YouTube for study breaks</p>
       </div>
-      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)" onsubmit="return false;">
-        <input type="text" id="yt-query" placeholder="Search music, podcasts..." required class="app-input flex-1" style="background:var(--app-surface)">
-        <button type="submit" class="app-btn px-4 transition-all-300" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="yt-query" placeholder="Search music, podcasts, vlogs..." required class="app-input flex-1" style="background:var(--app-surface)">
+        <button type="submit" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
       <div id="yt-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div class="text-center py-12 text-sm col-span-full" style="color:var(--app-text-dim)">Search for something to watch.</div>
+        <div class="text-center py-12 text-sm" style="color:var(--app-text-dim)">
+          <i class="fa-brands fa-youtube text-4xl mb-3 block" style="color:var(--app-border)"></i>
+          <p>Search for something to watch.</p>
+        </div>
       </div>
     </section>
 
-    <!-- PROFILE TAB -->
+    <!-- ===== PROFILE TAB ===== -->
     <section id="tab-profile" class="tab-view p-5 space-y-6 pb-24">
       <div class="text-center py-6">
-        <div id="profile-pic-container" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl relative transition-all-300 overflow-hidden avatar-frame">
-          <img id="profile-photo" src="" alt="" class="w-full h-full hidden object-cover">
-          <span id="profile-avatar" class="text-3xl font-extrabold font-display flex items-center justify-center w-full h-full" style="color:var(--app-accent)">S</span>
+        <!-- VIP Avatar Container -->
+        <div class="w-28 h-28 rounded-full mx-auto mb-4 relative" id="avatar-frame-container">
+          <!-- Frame overlay applied by JS -->
+          <div class="w-full h-full rounded-full overflow-hidden" style="background:var(--app-surface2);border:2px solid var(--app-border)">
+            <img id="profile-photo" src="" alt="" class="profile-avatar-img w-full h-full hidden">
+            <span id="profile-avatar" class="text-3xl font-extrabold font-display flex items-center justify-center w-full h-full" style="color:var(--app-accent)">S</span>
+          </div>
+          <!-- VIP Badge -->
+          <div id="vip-badge" class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border hidden" style="background:var(--app-accent);color:#1a1100;border-color:var(--app-accent)">VIP</div>
+          <!-- Blue Tick -->
+          <div id="profile-verified" class="absolute bottom-1 right-1 w-7 h-7 rounded-full border-2 flex items-center justify-center hidden" style="background:#3b82f6;border-color:var(--app-surface)">
+            <i class="fa-solid fa-check text-white text-[10px]"></i>
+          </div>
         </div>
         <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
-        <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 • UP Board</p>
-        <p id="profile-bio" class="text-xs mt-2 italic max-w-xs mx-auto" style="color:var(--app-text-dim)">Class 12 UP Board student.</p>
+        <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 &bull; UP Board</p>
+        <p id="profile-bio" class="text-xs mt-2 italic max-w-xs mx-auto" style="color:var(--app-text-dim)">Class 12 UP Board student preparing for excellence.</p>
       </div>
-      <div class="app-card p-5">
+
+      <!-- VIP Status Card -->
+      <div id="vip-status-card" class="app-card p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+            <i class="fa-solid fa-crown text-sm" style="color:var(--app-accent)"></i>
+          </div>
+          <div>
+            <p class="text-sm font-bold" style="color:var(--app-text)">VIP Status</p>
+            <p id="vip-tier-text" class="text-[11px]" style="color:var(--app-text-dim)">Free Member</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="p-2 rounded-xl border text-center" style="background:linear-gradient(135deg, rgba(205,127,50,0.1), rgba(205,127,50,0.05));border-color:rgba(205,127,50,0.3)">
+            <i class="fa-solid fa-medal text-lg" style="color:#cd7f32"></i>
+            <p class="text-[9px] font-bold uppercase mt-1" style="color:#cd7f32">Bronze</p>
+          </div>
+          <div class="p-2 rounded-xl border text-center" style="background:linear-gradient(135deg, rgba(192,192,192,0.1), rgba(192,192,192,0.05));border-color:rgba(192,192,192,0.3)">
+            <i class="fa-solid fa-medal text-lg" style="color:#C0C0C0"></i>
+            <p class="text-[9px] font-bold uppercase mt-1" style="color:#C0C0C0">Silver</p>
+          </div>
+          <div class="p-2 rounded-xl border text-center" style="background:linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.05));border-color:rgba(212,175,55,0.3)">
+            <i class="fa-solid fa-crown text-lg" style="color:#D4AF37"></i>
+            <p class="text-[9px] font-bold uppercase mt-1" style="color:#D4AF37">Gold</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges & Stats -->
+      <div class="app-card p-5 shadow-sm">
         <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Badges & Stats</p>
         <div class="flex flex-wrap gap-2 mb-4">
-          <span class="badge badge-scholar"><i class="fa-solid fa-medal"></i> Scholar</span>
+          <span class="badge badge-scholar"><i class="fa-solid fa-medal"></i> Class 12 Scholar</span>
+          <span class="badge badge-early"><i class="fa-solid fa-seedling"></i> Early Adopter</span>
+          <span class="badge badge-hard"><i class="fa-solid fa-fire"></i> Hard Worker</span>
         </div>
         <div class="grid grid-cols-3 gap-3">
           <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
@@ -214,57 +424,723 @@
           </div>
         </div>
       </div>
-      <button id="edit-profile-btn" type="button" class="app-btn app-btn-outline w-full"><i class="fa-solid fa-pen-to-square"></i><span>Edit Profile</span></button>
-      <button type="button" onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider border active:scale-95 transition-all-300" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Log Out</button>
+
+      <div class="app-card divide-y overflow-hidden shadow-sm" style="border-color:var(--app-border)">
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-id-card text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Exam Seat Number</p>
+              <p id="profile-seat" class="text-sm font-bold font-mono tracking-wide" style="color:var(--app-text)">UP-2027-88421</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-book text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Subjects</p>
+              <p id="profile-subjects" class="text-sm font-bold" style="color:var(--app-text)">Hindi, English, Physics, Chemistry, Math</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background:var(--app-surface2);border-color:var(--app-border)">
+              <i class="fa-solid fa-envelope text-xs" style="color:var(--app-text-dim)"></i>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Email</p>
+              <p id="profile-email" class="text-sm font-bold" style="color:var(--app-text)">student@school.edu</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="edit-profile-btn" type="button" class="app-btn app-btn-outline w-full">
+        <i class="fa-solid fa-pen-to-square"></i><span>Edit Profile</span>
+      </button>
+      <button type="button" onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider text-[11px] border" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">
+        Log Out
+      </button>
     </section>
+
   </main>
 
-  <!-- Bottom Nav -->
-  <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header" style="border-color:var(--app-border)">
-    <button type="button" data-tab="home" class="nav-btn active-tab" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
-    <button type="button" data-tab="classes" class="nav-btn" aria-label="Study"><i class="fa-solid fa-book-open"></i><span>Study</span></button>
-    <button type="button" data-tab="media" class="nav-btn" aria-label="Media"><i class="fa-brands fa-youtube"></i><span>Media</span></button>
-    <button type="button" data-tab="profile" class="nav-btn" aria-label="Profile"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+  <!-- ===== BOTTOM NAVIGATION (5 Tabs) ===== -->
+  <nav class="shrink-0 h-[72px] grid grid-cols-5 items-end pb-3 pb-safe z-40 border-t glass-header" style="border-color:var(--app-border)">
+    <button type="button" data-tab="home" class="nav-btn active-tab" aria-label="Home">
+      <i class="fa-solid fa-house"></i><span>Home</span>
+    </button>
+    <button type="button" data-tab="study" class="nav-btn" aria-label="Study">
+      <i class="fa-solid fa-book-open"></i><span>Study</span>
+    </button>
+    <button type="button" data-tab="social" class="nav-btn" aria-label="Social">
+      <i class="fa-solid fa-users"></i><span>Social</span>
+    </button>
+    <button type="button" data-tab="media" class="nav-btn" aria-label="Media">
+      <i class="fa-brands fa-youtube"></i><span>Media</span>
+    </button>
+    <button type="button" data-tab="profile" class="nav-btn" aria-label="Profile">
+      <i class="fa-solid fa-user"></i><span>Profile</span>
+    </button>
   </nav>
 </div>
 
-<!-- MODALS & PANELS remain structurally the same but with added Social/Upload features -->
+<!-- ========== SIDEBAR ========== -->
 <div id="sidebar-overlay"></div>
 <div id="sidebar" class="pb-safe">
-  <!-- Sidebar content identical to old, just adding Theme Switcher labels -->
+  <div class="p-6 border-b flex items-center gap-3" style="border-color:var(--app-border)">
+    <div class="w-11 h-11 rounded-xl flex items-center justify-center border shadow-md" style="background:var(--app-accent-soft);border-color:var(--app-border)">
+      <i class="fa-solid fa-bolt text-xl" style="color:var(--app-accent)"></i>
+    </div>
+    <div>
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">studyPro</h3>
+      <p class="text-[11px] font-medium" style="color:var(--app-text-dim)">v6.0 &bull; UP Board Class 12</p>
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-y-auto p-5 space-y-6">
+    <!-- Theme Switcher -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Appearance</p>
+      <div class="flex items-center gap-4">
+        <button type="button" onclick="App.setTheme('golden')" class="theme-pill active" id="pill-golden" style="background:linear-gradient(135deg,#D4AF37,#C0C0C0);border-color:#D4AF37" title="Golden Silver"></button>
+        <button type="button" onclick="App.setTheme('dark')" class="theme-pill" id="pill-dark" style="background:#09090b;border-color:#27272a" title="Dark"></button>
+        <button type="button" onclick="App.setTheme('light')" class="theme-pill" id="pill-light" style="background:#f8fafc;border-color:#cbd5e1" title="Light"></button>
+      </div>
+      <p id="theme-label" class="text-xs mt-2.5 font-semibold" style="color:var(--app-text-muted)">Golden Silver</p>
+    </div>
+
+    <!-- Install App -->
+    <div id="install-container" class="hidden">
+      <button type="button" onclick="App.installApp()" class="app-btn w-full" style="background:var(--app-success)">
+        <i class="fa-solid fa-download"></i><span>Install App</span>
+      </button>
+    </div>
+
+    <!-- Mini Tools -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Mini Tools</p>
+      <div class="space-y-2">
+        <button type="button" onclick="App.openCalculator()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-calculator w-5 text-center"></i><span>Scientific Calculator</span>
+        </button>
+        <button type="button" onclick="App.openNotepad()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-note-sticky w-5 text-center"></i><span>Quick Note Pad</span>
+        </button>
+        <button type="button" onclick="App.openTodo()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+          <i class="fa-solid fa-list-check w-5 text-center"></i><span>To-Do List</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Summer Homework -->
+    <div>
+      <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Vacation</p>
+      <button type="button" onclick="App.openHomework()" class="w-full flex items-center gap-3 p-3 rounded-xl border text-sm font-medium" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">
+        <i class="fa-solid fa-sun w-5 text-center" style="color:#D4AF37"></i><span>Summer Homework</span>
+      </button>
+    </div>
+
+    <div class="h-px" style="background:var(--app-border)"></div>
+
+    <!-- Admin Button -->
+    <div id="admin-btn-container" class="hidden">
+      <button type="button" onclick="App.openAdmin()" class="app-btn w-full" style="background:var(--app-danger)">
+        <i class="fa-solid fa-shield-halved"></i><span>Admin Dashboard</span>
+      </button>
+    </div>
+
+    <div class="h-px" style="background:var(--app-border)"></div>
+
+    <!-- Links -->
+    <div class="space-y-1">
+      <button type="button" onclick="App.openTerms()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left" style="color:var(--app-text-muted)">
+        <i class="fa-solid fa-file-contract w-5 text-center"></i><span>Terms & Conditions</span>
+      </button>
+      <button type="button" onclick="App.openAbout()" class="w-full flex items-center gap-3 text-sm font-medium py-2.5 px-3 rounded-xl text-left" style="color:var(--app-text-muted)">
+        <i class="fa-solid fa-circle-info w-5 text-center"></i><span>About studyPro</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="p-5 border-t" style="border-color:var(--app-border)">
+    <p class="text-[10px] text-center font-medium" style="color:var(--app-text-dim)">&copy; 2026 studyPro. Built for UP Board students.</p>
+  </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="admin-panel" class="pb-safe">
-  <!-- Added Social Post Form, Image Uploads -->
-</div>
-
-<!-- EDIT PROFILE MODAL -->
-<div id="edit-modal" class="modal-overlay">
+<!-- ========== EDIT PROFILE MODAL ========== -->
+<div id="edit-modal" class="modal-overlay" onclick="if(event.target===this)App.closeEditModal()">
   <div class="modal-content p-6 space-y-5">
     <div class="flex items-center justify-between">
       <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Edit Profile</h3>
-      <button type="button" onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <button type="button" onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
         <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
       </button>
     </div>
-    <form id="edit-form" class="space-y-3" onsubmit="return false;">
-      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Name</label><input type="text" id="edit-name" class="app-input" required></div>
-      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Profile Picture</label><input type="file" id="edit-photo-file" class="app-input" accept="image/*"></div>
-      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Bio</label><textarea id="edit-bio" class="app-input h-16 resize-none"></textarea></div>
-      <button type="submit" class="app-btn w-full mt-2 transition-all-300">Save Changes</button>
+    <form id="edit-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Name</label>
+        <input type="text" id="edit-name" class="app-input" required>
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Class</label>
+        <select id="edit-class" class="app-input">
+          <option value="12">Class 12</option>
+          <option value="11">Class 11</option>
+          <option value="10">Class 10</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Subjects</label>
+        <input type="text" id="edit-subjects" class="app-input" placeholder="Hindi, English, Physics...">
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Exam Seat Number</label>
+        <input type="text" id="edit-seat" class="app-input" placeholder="UP-2027-XXXXX">
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Short Bio</label>
+        <textarea id="edit-bio" class="app-input h-16 resize-none" placeholder="A short bio about yourself..."></textarea>
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Target Percentage</label>
+        <input type="text" id="edit-target" class="app-input" placeholder="e.g. 95%">
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">City / Location</label>
+        <input type="text" id="edit-city" class="app-input" placeholder="e.g. Lakhimpur Kheri">
+      </div>
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Phone Number</label>
+        <input type="tel" id="edit-phone" class="app-input" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <!-- Smart Image Upload for Profile -->
+      <div>
+        <label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Profile Picture</label>
+        <input type="file" id="edit-photo-file" class="app-input" accept="image/*" onchange="App.handleProfileImageUpload(this)">
+        <p class="text-[10px] mt-1" style="color:var(--app-text-dim)">Max 500KB. Images only.</p>
+        <input type="hidden" id="edit-photo-url">
+      </div>
+      <button type="submit" class="app-btn w-full mt-2">Save Changes</button>
     </form>
   </div>
 </div>
 
-<!-- Toast -->
+<!-- ========== STORY VIEWER MODAL ========== -->
+<div id="story-modal" class="modal-overlay" style="background:rgba(0,0,0,0.95);backdrop-filter:blur(12px)" onclick="if(event.target===this)App.closeStoryModal()">
+  <div class="w-full max-w-md mx-auto h-full flex flex-col justify-center p-0">
+    <div class="relative">
+      <!-- Progress Bar -->
+      <div class="absolute top-0 left-0 right-0 h-1 bg-white/20 rounded-full mx-4 mt-4">
+        <div id="story-progress" class="h-full bg-white rounded-full transition-all" style="width:0%"></div>
+      </div>
+      <!-- Story Header -->
+      <div class="absolute top-0 left-0 right-0 flex items-center justify-between p-4 mt-6">
+        <div class="flex items-center gap-3">
+          <img id="story-viewer-avatar" src="" alt="" class="w-10 h-10 rounded-full object-cover border-2" style="border-color:var(--app-accent)">
+          <div>
+            <p id="story-viewer-name" class="text-sm font-bold text-white">Name</p>
+            <p id="story-viewer-time" class="text-[10px] text-white/60">2h ago</p>
+          </div>
+        </div>
+        <button type="button" onclick="App.closeStoryModal()" class="w-9 h-9 rounded-full flex items-center justify-center bg-black/40">
+          <i class="fa-solid fa-xmark text-white"></i>
+        </button>
+      </div>
+      <!-- Story Content -->
+      <img id="story-viewer-img" src="" alt="" class="w-full aspect-[9/16] object-cover rounded-2xl">
+    </div>
+  </div>
+</div>
+
+<!-- ========== ADMIN PANEL ========== -->
+<div id="admin-panel" class="pb-safe">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3">
+      <button type="button" onclick="App.closeAdmin()" class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <span class="font-extrabold text-lg tracking-tight font-display" style="color:var(--app-text)">Admin Dashboard</span>
+    </div>
+  </header>
+  <main id="admin-scroll" class="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
+
+    <!-- Exam Timer Control -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-clock" style="color:var(--app-accent)"></i> Exam Timer Control
+      </h3>
+      <div class="flex items-center justify-between p-3 rounded-xl border mb-3" style="background:var(--app-surface2);border-color:var(--app-border)">
+        <span class="text-sm font-medium" style="color:var(--app-text-muted)">Set timer to "Soon..."</span>
+        <button type="button" id="admin-soon-toggle" onclick="App.toggleExamSoon()" class="w-12 h-6 rounded-full relative transition-all" style="background:var(--app-border)">
+          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-all" id="admin-soon-knob"></span>
+        </button>
+      </div>
+      <p class="text-[11px]" style="color:var(--app-text-dim)">Toggle ON to display "Soon..." on all student dashboards.</p>
+    </div>
+
+    <!-- Create Social Post -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-pen-nib" style="color:#3b82f6"></i> Create Social Post
+      </h3>
+      <form id="social-post-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <textarea id="post-text" class="app-input h-20 resize-none" placeholder="What's on your mind, Founder?" required></textarea>
+        <div>
+          <input type="file" id="post-image" class="app-input" accept="image/*" onchange="App.handlePostImageSelect(this)">
+          <p class="text-[10px] mt-1" style="color:var(--app-text-dim)">Images only. Max 500KB after compression.</p>
+        </div>
+        <input type="hidden" id="post-image-url">
+        <div id="post-image-preview" class="hidden rounded-xl overflow-hidden border" style="border-color:var(--app-border)">
+          <img src="" alt="Preview" class="w-full h-48 object-cover">
+        </div>
+        <button type="submit" class="app-btn w-full">
+          <i class="fa-solid fa-paper-plane"></i><span>Publish Post</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Push Notice -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Push Notice
+      </h3>
+      <form id="notice-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="notice-title" class="app-input" placeholder="Notice title..." required>
+        <textarea id="notice-body" class="app-input h-24 resize-none" placeholder="Notice body text..." required></textarea>
+        <select id="notice-priority" class="app-input">
+          <option value="normal">Normal</option>
+          <option value="urgent">Urgent</option>
+        </select>
+        <button type="submit" class="app-btn w-full">Publish Notice</button>
+      </form>
+    </div>
+
+    <!-- Add Lecture -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-video" style="color:var(--app-success)"></i> Add Lecture
+      </h3>
+      <form id="lecture-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="lec-title" class="app-input" placeholder="Lecture title..." required>
+        <select id="lec-subject" class="app-input">
+          <option value="Hindi">Hindi</option>
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="text" id="lec-chapter" class="app-input" placeholder="Chapter (e.g. Ch. 7)" required>
+        <input type="url" id="lec-url" class="app-input" placeholder="Video URL (YouTube or Drive)">
+        <button type="submit" class="app-btn w-full">Add Lecture</button>
+      </form>
+    </div>
+
+    <!-- Add Mock Test -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Add Mock Test
+      </h3>
+      <form id="test-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="test-title" class="app-input" placeholder="Test title..." required>
+        <select id="test-subject" class="app-input">
+          <option value="Hindi">Hindi</option>
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+        </select>
+        <textarea id="test-desc" class="app-input h-20 resize-none" placeholder="Short description..."></textarea>
+        <input type="url" id="test-link" class="app-input" placeholder="Google Drive / Form Link" required>
+        <input type="date" id="test-date" class="app-input" required>
+        <div class="grid grid-cols-2 gap-3">
+          <input type="number" id="test-duration" class="app-input" placeholder="Duration (min)" min="1" value="60">
+          <input type="number" id="test-marks" class="app-input" placeholder="Max Marks" min="1" value="100">
+        </div>
+        <button type="submit" class="app-btn w-full">Add Mock Test</button>
+      </form>
+    </div>
+
+    <!-- Add Exam Date -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-calendar-plus" style="color:var(--app-accent)"></i> Add Exam Date
+      </h3>
+      <form id="datesheet-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="ds-name" class="app-input" placeholder="Exam Name (e.g. Pre-Board)" required>
+        <select id="ds-subject" class="app-input">
+          <option value="Hindi">Hindi</option>
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="date" id="ds-date" class="app-input" required>
+        <select id="ds-shift" class="app-input">
+          <option value="Morning">Morning Shift</option>
+          <option value="Evening">Evening Shift</option>
+        </select>
+        <input type="time" id="ds-time" class="app-input" required>
+        <button type="submit" class="app-btn w-full">Add to Date Sheet</button>
+      </form>
+    </div>
+
+    <!-- Formula of the Day -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Formula of the Day
+      </h3>
+      <form id="formula-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="formula-title" class="app-input" placeholder="Formula Title" required>
+        <input type="text" id="formula-math" class="app-input" placeholder="Formula (e.g. F = ma)" required>
+        <textarea id="formula-desc" class="app-input h-20 resize-none" placeholder="Brief description..."></textarea>
+        <button type="submit" class="app-btn w-full">Update Formula</button>
+      </form>
+    </div>
+
+    <!-- Word of the Day -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-spell-check" style="color:#8b5cf6"></i> Word of the Day
+      </h3>
+      <form id="word-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <input type="text" id="word-en" class="app-input" placeholder="English Word" required>
+        <input type="text" id="word-hi" class="app-input" placeholder="Hindi Meaning" required>
+        <input type="text" id="word-syn" class="app-input" placeholder="Synonyms (comma separated)">
+        <input type="text" id="word-ex" class="app-input" placeholder="Example Sentence">
+        <button type="submit" class="app-btn w-full">Update Word</button>
+      </form>
+    </div>
+
+    <!-- Push Summer Homework -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-sun" style="color:#D4AF37"></i> Push Summer Homework
+      </h3>
+      <form id="homework-form" class="space-y-3" onsubmit="event.preventDefault(); return false;">
+        <select id="hw-subject" class="app-input">
+          <option value="Hindi">Hindi</option>
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+        </select>
+        <input type="text" id="hw-teacher" class="app-input" placeholder="Teacher Name" required>
+        <input type="tel" id="hw-mobile" class="app-input" placeholder="Teacher Mobile" required>
+        <textarea id="hw-content" class="app-input h-40 resize-none" placeholder="Homework content..." required></textarea>
+        <button type="submit" class="app-btn w-full">Publish Homework</button>
+      </form>
+    </div>
+
+    <!-- Manage Social Posts -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-rss" style="color:#3b82f6"></i> Manage Social Posts
+      </h3>
+      <div id="admin-social-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading posts...</p>
+      </div>
+    </div>
+
+    <!-- Manage Notices -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-bullhorn" style="color:var(--app-danger)"></i> Manage Notices
+      </h3>
+      <div id="admin-notices-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading notices...</p>
+      </div>
+    </div>
+
+    <!-- Manage Lectures -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-video" style="color:var(--app-success)"></i> Manage Lectures
+      </h3>
+      <div id="admin-lectures-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading lectures...</p>
+      </div>
+    </div>
+
+    <!-- Manage Homework -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-sun" style="color:#D4AF37"></i> Manage Homework
+      </h3>
+      <div id="admin-homework-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading homework...</p>
+      </div>
+    </div>
+
+    <!-- Manage Formulas -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-square-root-variable" style="color:#3b82f6"></i> Manage Formulas
+      </h3>
+      <div id="admin-formulas-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading formulas...</p>
+      </div>
+    </div>
+
+    <!-- Manage Mock Tests -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-list-check" style="color:var(--app-accent)"></i> Manage Mock Tests
+      </h3>
+      <div id="admin-tests-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading tests...</p>
+      </div>
+    </div>
+
+    <!-- Manage Date Sheet -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-calendar-days" style="color:var(--app-accent)"></i> Manage Date Sheet
+      </h3>
+      <div id="admin-datesheet-list" class="space-y-3">
+        <p class="text-xs text-center py-4" style="color:var(--app-text-dim)">Loading dates...</p>
+      </div>
+    </div>
+
+    <!-- User Stats -->
+    <div class="app-card p-5 shadow-sm">
+      <h3 class="font-bold text-sm mb-4 flex items-center gap-2" style="color:var(--app-text)">
+        <i class="fa-solid fa-users" style="color:var(--app-success)"></i> User Stats
+      </h3>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+          <p id="stat-users" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
+          <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Total Users</p>
+        </div>
+        <div class="p-4 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+          <p id="stat-tests" class="text-2xl font-extrabold font-display" style="color:var(--app-text)">--</p>
+          <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Mock Tests</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========== SUMMER HOMEWORK VIEW ========== -->
+<div id="homework-view" class="pb-safe">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3">
+      <button type="button" onclick="App.closeHomework()" class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div>
+        <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color:var(--app-text)">Summer Homework</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">Class 12 Vacation</span>
+      </div>
+    </div>
+  </header>
+  <main id="homework-scroll" class="flex-1 overflow-y-auto">
+    <div class="flex gap-2 overflow-x-auto pb-2 px-5 pt-4" style="scrollbar-width:none;-webkit-overflow-scrolling:touch">
+      <button type="button" onclick="App.filterHomework('Hindi')" class="hw-tab-btn active" data-hw="Hindi">Hin</button>
+      <button type="button" onclick="App.filterHomework('English')" class="hw-tab-btn" data-hw="English">Eng</button>
+      <button type="button" onclick="App.filterHomework('Mathematics')" class="hw-tab-btn" data-hw="Mathematics">Math</button>
+      <button type="button" onclick="App.filterHomework('Physics')" class="hw-tab-btn" data-hw="Physics">Phy</button>
+      <button type="button" onclick="App.filterHomework('Chemistry')" class="hw-tab-btn" data-hw="Chemistry">Che</button>
+    </div>
+    <div id="homework-list" class="p-5 space-y-4 pb-24"></div>
+  </main>
+</div>
+
+<!-- ========== VIDEO MODAL (YouTube) ========== -->
+<div id="video-modal" onclick="if(event.target===this)App.closeVideo()">
+  <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <h3 id="modal-title" class="text-sm font-bold truncate pr-4" style="color:var(--app-text)">Video</h3>
+    <button type="button" onclick="App.closeVideo()" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+    </button>
+  </div>
+  <div class="flex-1 flex items-center justify-center p-4" style="background:#000">
+    <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color:var(--app-border)">
+      <iframe id="video-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LECTURE VIDEO MODAL ========== -->
+<div id="lecture-modal" class="modal-overlay" onclick="if(event.target===this)App.closeLecture()">
+  <div class="modal-content p-0 space-y-0" style="max-width:640px">
+    <div class="shrink-0 h-14 flex items-center justify-between px-5 border-b" style="border-color:var(--app-border)">
+      <h3 id="lecture-modal-title" class="text-sm font-bold truncate pr-4" style="color:var(--app-text)">Watch Lecture</h3>
+      <button type="button" onclick="App.closeLecture()" class="w-9 h-9 rounded-full flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div class="p-5 space-y-4">
+      <div class="w-full aspect-video rounded-2xl overflow-hidden border shadow-2xl" style="border-color:var(--app-border);background:#000">
+        <iframe id="lecture-iframe" class="w-full h-full" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+      </div>
+      <a id="lecture-external-link" href="#" target="_blank" rel="noopener" class="app-btn w-full" style="text-decoration:none">
+        <i class="fa-solid fa-external-link-alt"></i><span>Open in New Tab</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TEST VIEWER MODAL ========== -->
+<div id="test-modal" onclick="if(event.target===this)App.closeTest()">
+  <div class="shrink-0 h-14 flex items-center justify-between px-4 border-b glass-header" style="border-color:var(--app-border);background:var(--app-surface)">
+    <div class="flex items-center gap-3 overflow-hidden">
+      <button type="button" onclick="App.closeTest()" class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-arrow-left" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div class="truncate">
+        <h3 id="test-modal-title" class="text-sm font-bold truncate" style="color:var(--app-text)">Mock Test</h3>
+        <p id="test-modal-subject" class="text-[11px] font-medium" style="color:var(--app-text-dim)">Subject</p>
+      </div>
+    </div>
+    <span id="test-modal-timer" class="text-xs font-mono font-bold px-2 py-1 rounded-lg border shrink-0" style="background:var(--app-surface2);border-color:var(--app-border);color:var(--app-text-muted)">--:--</span>
+  </div>
+  <div class="flex-1 flex flex-col">
+    <div class="flex-1 relative" style="background:var(--app-bg)">
+      <iframe id="test-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
+    <div class="shrink-0 p-4 border-t flex items-center justify-between gap-3" style="border-color:var(--app-border);background:var(--app-surface)">
+      <button type="button" onclick="App.closeTest()" class="app-btn app-btn-outline flex-1" style="padding:12px">
+        <i class="fa-solid fa-xmark"></i><span>Close Test</span>
+      </button>
+      <a id="test-external-link" href="#" target="_blank" rel="noopener" class="app-btn flex-1" style="padding:12px;text-decoration:none">
+        <i class="fa-solid fa-external-link-alt"></i><span>Open in Drive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CALCULATOR MODAL ========== -->
+<div id="calc-modal" class="modal-overlay" onclick="if(event.target===this)App.closeCalculator()">
+  <div class="modal-content p-5 space-y-4" style="max-width:360px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Calculator</h3>
+      <button type="button" onclick="App.closeCalculator()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div id="calc-display" class="calc-display">0</div>
+    <div class="grid grid-cols-4 gap-2">
+      <button type="button" onclick="App.calcInput('C')" class="calc-btn" style="background:var(--app-danger);color:#fff;border-color:var(--app-danger)">C</button>
+      <button type="button" onclick="App.calcInput('(')" class="calc-btn calc-btn-op">(</button>
+      <button type="button" onclick="App.calcInput(')')" class="calc-btn calc-btn-op">)</button>
+      <button type="button" onclick="App.calcInput('/')" class="calc-btn calc-btn-op">&divide;</button>
+      <button type="button" onclick="App.calcInput('7')" class="calc-btn">7</button>
+      <button type="button" onclick="App.calcInput('8')" class="calc-btn">8</button>
+      <button type="button" onclick="App.calcInput('9')" class="calc-btn">9</button>
+      <button type="button" onclick="App.calcInput('*')" class="calc-btn calc-btn-op">&times;</button>
+      <button type="button" onclick="App.calcInput('4')" class="calc-btn">4</button>
+      <button type="button" onclick="App.calcInput('5')" class="calc-btn">5</button>
+      <button type="button" onclick="App.calcInput('6')" class="calc-btn">6</button>
+      <button type="button" onclick="App.calcInput('-')" class="calc-btn calc-btn-op">&minus;</button>
+      <button type="button" onclick="App.calcInput('1')" class="calc-btn">1</button>
+      <button type="button" onclick="App.calcInput('2')" class="calc-btn">2</button>
+      <button type="button" onclick="App.calcInput('3')" class="calc-btn">3</button>
+      <button type="button" onclick="App.calcInput('+')" class="calc-btn calc-btn-op">+</button>
+      <button type="button" onclick="App.calcInput('0')" class="calc-btn">0</button>
+      <button type="button" onclick="App.calcInput('.')" class="calc-btn">.</button>
+      <button type="button" onclick="App.calcInput('del')" class="calc-btn calc-btn-op"><i class="fa-solid fa-delete-left text-sm"></i></button>
+      <button type="button" onclick="App.calcInput('=')" class="calc-btn" style="background:var(--app-success);color:#fff;border-color:var(--app-success)">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== NOTEPAD MODAL ========== -->
+<div id="notepad-modal" class="modal-overlay" onclick="if(event.target===this)App.closeNotepad()">
+  <div class="modal-content p-5 space-y-4" style="max-width:420px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Quick Notes</h3>
+      <button type="button" onclick="App.closeNotepad()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <textarea id="notepad-area" class="app-input h-64 resize-none" placeholder="Type your quick notes here..."></textarea>
+    <div class="flex gap-2">
+      <button type="button" onclick="App.saveNotepad()" class="app-btn flex-1"><i class="fa-solid fa-floppy-disk"></i><span>Save</span></button>
+      <button type="button" onclick="App.clearNotepad()" class="app-btn app-btn-outline flex-1"><i class="fa-solid fa-trash"></i><span>Clear</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TODO MODAL ========== -->
+<div id="todo-modal" class="modal-overlay" onclick="if(event.target===this)App.closeTodo()">
+  <div class="modal-content p-5 space-y-4" style="max-width:420px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">To-Do List</h3>
+      <button type="button" onclick="App.closeTodo()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div class="flex gap-2">
+      <input type="text" id="todo-input" class="app-input flex-1" placeholder="Add a task...">
+      <button type="button" onclick="App.addTodo()" class="app-btn px-4" style="width:auto"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div id="todo-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
+  </div>
+</div>
+
+<!-- ========== TERMS MODAL ========== -->
+<div id="terms-modal" class="modal-overlay" onclick="if(event.target===this)App.closeTerms()">
+  <div class="modal-content p-6 space-y-4" style="max-width:480px">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Terms & Conditions</h3>
+      <button type="button" onclick="App.closeTerms()" class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <div class="space-y-3 text-sm leading-relaxed" style="color:var(--app-text-muted);max-height:60vh;overflow-y:auto">
+      <p><strong style="color:var(--app-text)">1. Acceptance of Terms</strong><br>By accessing and using studyPro, you accept and agree to be bound by these Terms and Conditions.</p>
+      <p><strong style="color:var(--app-text)">2. Use of Service</strong><br>studyPro provides study materials, mock tests, and entertainment content for UP Board Class 12 students. All content is for educational purposes only.</p>
+      <p><strong style="color:var(--app-text)">3. User Accounts</strong><br>You are responsible for maintaining the confidentiality of your account credentials. Notify us immediately of any unauthorized use.</p>
+      <p><strong style="color:var(--app-text)">4. Content Ownership</strong><br>All study materials and content provided through the app remain the intellectual property of studyPro and its contributors.</p>
+      <p><strong style="color:var(--app-text)">5. Privacy</strong><br>We collect minimal user data necessary for app functionality. Your data is stored securely and never shared with third parties.</p>
+      <p><strong style="color:var(--app-text)">6. Modifications</strong><br>We reserve the right to modify these terms at any time. Continued use constitutes acceptance of updated terms.</p>
+    </div>
+    <button type="button" onclick="App.closeTerms()" class="app-btn w-full">I Understand</button>
+  </div>
+</div>
+
+<!-- ========== ABOUT MODAL ========== -->
+<div id="about-modal" class="modal-overlay" onclick="if(event.target===this)App.closeAbout()">
+  <div class="modal-content p-6 space-y-5 text-center" style="max-width:400px">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-lg" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
+    </div>
+    <div>
+      <h3 class="font-bold text-xl font-display" style="color:var(--app-text)">About studyPro</h3>
+      <p class="text-xs mt-1 font-medium" style="color:var(--app-text-dim)">Version 6.0 &bull; UP Board Edition</p>
+    </div>
+    <div class="p-4 rounded-xl border text-left space-y-3" style="background:var(--app-surface2);border-color:var(--app-border)">
+      <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
+        <strong style="color:var(--app-text)">Developed by Mohammad Arshad</strong>, a Class 12 student from <strong style="color:var(--app-text)">Lakhimpur Kheri, Uttar Pradesh</strong>.
+      </p>
+      <p class="text-sm leading-relaxed" style="color:var(--app-text-muted)">
+        studyPro is <strong style="color:var(--app-text)">Project 0</strong>, designed to revolutionize digital study notes and entertainment for UP Board students.
+      </p>
+    </div>
+    <button type="button" onclick="App.closeAbout()" class="app-btn w-full">Close</button>
+  </div>
+</div>
+
+<!-- ========== TOAST ========== -->
 <div id="toast">
-  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3 transition-all-300" style="background:var(--app-surface);border-color:var(--app-border)">
+  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3" style="background:var(--app-surface);border-color:var(--app-border)">
     <i id="toast-icon" class="fa-solid fa-circle-check" style="color:var(--app-success)"></i>
     <span id="toast-msg" class="text-sm font-semibold" style="color:var(--app-text)">Success</span>
   </div>
 </div>
 
+<!-- ========== SCRIPTS ========== -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 <script type="module" src="app.js"></script>
 </body>
 </html>
