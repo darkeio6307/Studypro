@@ -1727,42 +1727,25 @@ async function loadWordOfDay() {
   }
 }
 
-// ===== SUMMER HOMEWORK =====
-function openHomework() {
-  closeAllModals();
-  const view = $('#homework-view');
-  if (view) view.classList.add('open');
-  closeSidebar();
-  loadHomework();
-}
-
-function closeHomework() {
-  const view = $('#homework-view');
-  if (view) view.classList.remove('open');
-  const scroll = $('#homework-scroll');
-  if (scroll) scroll.scrollTop = 0;
-}
-
-function filterHomework(sub) {
-  state.activeHomeworkSubject = sub || 'Hindi';
-  $$('.hw-tab-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.hw === state.activeHomeworkSubject);
-  });
-  loadHomework();
-}
-
+// ===== SUMMER HOMEWORK (BUG FIXED) =====
 async function loadHomework() {
   const container = $('#homework-list');
   if (!container || !db) return;
   container.innerHTML = '<div class="space-y-4"><div class="skeleton h-32 rounded-2xl"></div><div class="skeleton h-32 rounded-2xl"></div></div>';
   try {
-    const snap = await db.collection('summerHomework').where('subject', '==', state.activeHomeworkSubject).orderBy('createdAt', 'desc').get();
-    if (snap.empty) {
+    // BUG FIX: Removed .where() to bypass Firebase Index Error
+    const snap = await db.collection('summerHomework').orderBy('createdAt', 'desc').get();
+    
+    // Javascript में मैन्युअली फिल्टर कर रहे हैं 
+    const filteredDocs = snap.docs.filter(doc => doc.data().subject === state.activeHomeworkSubject);
+
+    if (filteredDocs.length === 0) {
       container.innerHTML = `<div class="text-center py-14"><div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style="background:var(--app-surface2);border:1px solid var(--app-border)"><i class="fa-solid fa-sun text-2xl" style="color:var(--app-text-dim)"></i></div><p class="text-sm font-semibold" style="color:var(--app-text-muted)">No homework for ${escapeHtml(state.activeHomeworkSubject)} yet</p><p class="text-xs mt-1" style="color:var(--app-text-dim)">Check back later or contact your teacher.</p></div>`;
       return;
     }
+    
     let html = '';
-    snap.docs.forEach((docItem, idx) => {
+    filteredDocs.forEach((docItem, idx) => {
       const h = docItem.data();
       const subColors = { Hindi: '#f97316', English: '#8b5cf6', Mathematics: '#f59e0b', Physics: '#3b82f6', Chemistry: '#22c55e' };
       const color = subColors[h.subject] || '#3b82f6';
@@ -1774,6 +1757,7 @@ async function loadHomework() {
     });
     container.innerHTML = html;
   } catch (e) {
+    console.error("Homework Error: ", e);
     container.innerHTML = '<p class="text-sm text-center py-8" style="color:var(--app-text-dim)">Unable to load homework.</p>';
   }
 }
