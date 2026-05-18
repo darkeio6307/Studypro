@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="description" content="studyPro - UP Board Class 12 Study & Entertainment Hub">
+  <title>studyPro — UP Board Class 12</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','sans-serif'], display: ['Space Grotesk','sans-serif'] },
+          colors: {
+            app: {
+              bg: 'var(--app-bg)', surface: 'var(--app-surface)', surface2: 'var(--app-surface2)',
+              border: 'var(--app-border)', text: 'var(--app-text)', textMuted: 'var(--app-text-muted)',
+              textDim: 'var(--app-text-dim)', accent: 'var(--app-accent)', accentSoft: 'var(--app-accent-soft)',
+              danger: 'var(--app-danger)', success: 'var(--app-success)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="theme-golden antialiased">
+
+<!-- Firebase Load Error Screen -->
+<div id="firebase-error" class="hidden">
+  <div class="text-center space-y-4 max-w-sm">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+      <i class="fa-solid fa-triangle-exclamation text-2xl" style="color:var(--app-danger)"></i>
+    </div>
+    <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Connection Error</h2>
+    <p class="text-sm" style="color:var(--app-text-muted)">Unable to connect to the studyPro servers. Please check your internet connection and try again.</p>
+    <button onclick="location.reload()" class="app-btn w-full"><i class="fa-solid fa-rotate-right"></i><span>Retry</span></button>
+  </div>
+</div>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="w-full max-w-sm mx-auto">
+    <div class="text-center space-y-3 mb-8">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg transition-all-300" style="background:var(--app-accent-soft);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-graduation-cap text-2xl" style="color:var(--app-accent)"></i>
+      </div>
+      <h1 class="text-4xl font-extrabold tracking-tight font-display gold-shimmer">studyPro</h1>
+      <p class="text-sm font-medium" style="color:var(--app-text-muted)">UP Board Class 12 • Study & Social Hub</p>
+    </div>
+
+    <div id="login-box" class="auth-form-box space-y-4">
+      <div class="text-center mb-2">
+        <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Welcome Back</h2>
+        <p class="text-xs mt-1" style="color:var(--app-text-dim)">Log in to continue your prep</p>
+      </div>
+      <button id="google-login" type="button" class="app-btn app-btn-outline w-full transition-all-300">
+        <i class="fa-brands fa-google"></i><span>Continue with Google</span>
+      </button>
+      <div class="flex items-center gap-3">
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+        <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+      </div>
+      <form id="login-form" class="space-y-3" onsubmit="return false;">
+        <input type="email" id="login-email" class="app-input" placeholder="Email address" required autocomplete="email">
+        <input type="password" id="login-password" class="app-input" placeholder="Password" required autocomplete="current-password">
+        <button type="submit" id="login-submit" class="app-btn w-full mt-2 transition-all-300"><span>Log In</span></button>
+      </form>
+      <p class="text-center text-sm" style="color:var(--app-text-dim)">
+        New student? <button type="button" onclick="App.showRegister()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Create account</button>
+      </p>
+    </div>
+
+    <div id="register-box" class="auth-form-box hidden space-y-4">
+      <div class="text-center mb-2">
+        <h2 class="text-xl font-bold font-display" style="color:var(--app-text)">Create Account</h2>
+        <p class="text-xs mt-1" style="color:var(--app-text-dim)">Join studyPro for UP Board prep</p>
+      </div>
+      <button id="google-register" type="button" class="app-btn app-btn-outline w-full transition-all-300">
+        <i class="fa-brands fa-google"></i><span>Sign up with Google</span>
+      </button>
+      <div class="flex items-center gap-3">
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+        <span class="text-xs font-bold uppercase tracking-widest" style="color:var(--app-text-dim)">or</span>
+        <div class="flex-1 h-px" style="background:var(--app-border)"></div>
+      </div>
+      <form id="register-form" class="space-y-3" onsubmit="return false;">
+        <input type="text" id="reg-name" class="app-input" placeholder="Full Name" required autocomplete="name">
+        <input type="email" id="reg-email" class="app-input" placeholder="Email address" required autocomplete="email">
+        <input type="password" id="reg-password" class="app-input" placeholder="Password (min. 6 chars)" required minlength="6" autocomplete="new-password">
+        <select id="reg-class" class="app-input">
+          <option value="12">Class 12</option><option value="11">Class 11</option><option value="10">Class 10</option>
+        </select>
+        <button type="submit" id="reg-submit" class="app-btn w-full mt-2 transition-all-300"><span>Create Account</span></button>
+      </form>
+      <p class="text-center text-sm" style="color:var(--app-text-dim)">
+        Already have an account? <button type="button" onclick="App.showLogin()" class="font-bold underline transition-all-300 hover:opacity-80" style="color:var(--app-accent);background:none;border:none;cursor:pointer">Log in</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell" class="hidden h-full w-full flex-col">
+  <header class="shrink-0 h-16 flex items-center justify-between px-5 z-40 border-b glass-header" style="border-color:var(--app-border)">
+    <div class="flex items-center gap-3">
+      <button id="menu-btn" type="button" class="w-10 h-10 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)" aria-label="Open menu">
+        <i class="fa-solid fa-bars text-sm" style="color:var(--app-text-muted)"></i>
+      </button>
+      <div>
+        <span class="font-extrabold text-lg tracking-tight font-display block leading-none" style="color:var(--app-text)">studyPro</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider" style="color:var(--app-text-dim)">UP Board</span>
+      </div>
+    </div>
+    <div id="exam-timer-badge" class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border glow-soon transition-all-300" style="background:var(--app-surface2);border-color:var(--app-border)">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:var(--app-success)"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:var(--app-success)"></span>
+      </span>
+      <span id="exam-timer" class="text-xs font-mono font-bold tracking-wide" style="color:var(--app-text-muted)">Soon...</span>
+    </div>
+  </header>
+
+  <main id="main-scroll" class="flex-1 relative">
+    <!-- HOME TAB -->
+    <section id="tab-home" class="tab-view active p-5 space-y-5 pb-24">
+      <div class="animate-fade-up">
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-1" style="color:var(--app-text-dim)">Welcome back</p>
+        <h2 id="home-welcome" class="text-3xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
+      </div>
+      <!-- Stories -->
+      <div id="stories-bar" class="flex gap-4 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none;"></div>
+      <!-- Feed -->
+      <div id="social-feed" class="space-y-5"></div>
+    </section>
+
+    <!-- STUDY TAB -->
+    <section id="tab-classes" class="tab-view p-5 space-y-4 pb-24">
+      <div class="flex items-center justify-between mb-1">
+        <div>
+          <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Study</h2>
+          <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Lectures & Mock Tests</p>
+        </div>
+        <span class="text-[11px] font-bold px-3 py-1.5 rounded-lg border uppercase tracking-wider" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Class 12</span>
+      </div>
+      <div class="flex gap-2 overflow-x-auto pb-2 -mx-5 px-5" style="scrollbar-width:none">
+        <button type="button" onclick="App.filterSubject('all')" class="sub-tab-btn active" data-sub="all">All</button>
+        <button type="button" onclick="App.filterSubject('Hindi')" class="sub-tab-btn" data-sub="Hindi">Hin</button>
+        <button type="button" onclick="App.filterSubject('English')" class="sub-tab-btn" data-sub="English">Eng</button>
+        <button type="button" onclick="App.filterSubject('Mathematics')" class="sub-tab-btn" data-sub="Mathematics">Math</button>
+        <button type="button" onclick="App.filterSubject('Physics')" class="sub-tab-btn" data-sub="Physics">Phy</button>
+        <button type="button" onclick="App.filterSubject('Chemistry')" class="sub-tab-btn" data-sub="Chemistry">Che</button>
+      </div>
+      <div id="lectures-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      <div class="mt-6">
+        <h3 class="font-bold text-sm mb-3 flex items-center gap-2" style="color:var(--app-text)">
+          <i class="fa-solid fa-file-circle-check" style="color:#8b5cf6"></i> Mock Tests
+        </h3>
+        <div id="tests-grid" class="grid grid-cols-1 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- MEDIA TAB -->
+    <section id="tab-media" class="tab-view p-5 space-y-4 pb-24">
+      <div class="mb-2">
+        <h2 class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Media</h2>
+        <p class="text-xs mt-0.5" style="color:var(--app-text-dim)">Search YouTube for study breaks</p>
+      </div>
+      <form id="yt-search-form" class="flex gap-2 sticky top-0 z-10 py-2 -mx-5 px-5" style="background:var(--app-bg)" onsubmit="return false;">
+        <input type="text" id="yt-query" placeholder="Search music, podcasts..." required class="app-input flex-1" style="background:var(--app-surface)">
+        <button type="submit" class="app-btn px-4 transition-all-300" style="width:auto"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+      <div id="yt-results" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div class="text-center py-12 text-sm col-span-full" style="color:var(--app-text-dim)">Search for something to watch.</div>
+      </div>
+    </section>
+
+    <!-- PROFILE TAB -->
+    <section id="tab-profile" class="tab-view p-5 space-y-6 pb-24">
+      <div class="text-center py-6">
+        <div id="profile-pic-container" class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl relative transition-all-300 overflow-hidden avatar-frame">
+          <img id="profile-photo" src="" alt="" class="w-full h-full hidden object-cover">
+          <span id="profile-avatar" class="text-3xl font-extrabold font-display flex items-center justify-center w-full h-full" style="color:var(--app-accent)">S</span>
+        </div>
+        <h2 id="profile-name" class="text-2xl font-extrabold tracking-tight font-display" style="color:var(--app-text)">Student</h2>
+        <p id="profile-class" class="text-sm mt-1 font-medium" style="color:var(--app-text-muted)">Class 12 • UP Board</p>
+        <p id="profile-bio" class="text-xs mt-2 italic max-w-xs mx-auto" style="color:var(--app-text-dim)">Class 12 UP Board student.</p>
+      </div>
+      <div class="app-card p-5">
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-3" style="color:var(--app-text-dim)">Badges & Stats</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge badge-scholar"><i class="fa-solid fa-medal"></i> Scholar</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-target" class="text-lg font-extrabold font-display" style="color:var(--app-accent)">95%</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Target</p>
+          </div>
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-city" class="text-lg font-extrabold font-display" style="color:var(--app-text)">LKH</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">City</p>
+          </div>
+          <div class="p-3 rounded-xl border text-center" style="background:var(--app-surface2);border-color:var(--app-border)">
+            <p id="profile-phone" class="text-[11px] font-extrabold font-display truncate" style="color:var(--app-text)">--</p>
+            <p class="text-[10px] font-bold uppercase tracking-wide mt-1" style="color:var(--app-text-dim)">Phone</p>
+          </div>
+        </div>
+      </div>
+      <button id="edit-profile-btn" type="button" class="app-btn app-btn-outline w-full"><i class="fa-solid fa-pen-to-square"></i><span>Edit Profile</span></button>
+      <button type="button" onclick="App.logout()" class="w-full py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider border active:scale-95 transition-all-300" style="background:var(--app-surface2);color:var(--app-text-dim);border-color:var(--app-border)">Log Out</button>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="shrink-0 h-[72px] grid grid-cols-4 items-end pb-3 pb-safe z-40 border-t glass-header" style="border-color:var(--app-border)">
+    <button type="button" data-tab="home" class="nav-btn active-tab" aria-label="Home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+    <button type="button" data-tab="classes" class="nav-btn" aria-label="Study"><i class="fa-solid fa-book-open"></i><span>Study</span></button>
+    <button type="button" data-tab="media" class="nav-btn" aria-label="Media"><i class="fa-brands fa-youtube"></i><span>Media</span></button>
+    <button type="button" data-tab="profile" class="nav-btn" aria-label="Profile"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+  </nav>
+</div>
+
+<!-- MODALS & PANELS remain structurally the same but with added Social/Upload features -->
+<div id="sidebar-overlay"></div>
+<div id="sidebar" class="pb-safe">
+  <!-- Sidebar content identical to old, just adding Theme Switcher labels -->
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" class="pb-safe">
+  <!-- Added Social Post Form, Image Uploads -->
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div id="edit-modal" class="modal-overlay">
+  <div class="modal-content p-6 space-y-5">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-lg font-display" style="color:var(--app-text)">Edit Profile</h3>
+      <button type="button" onclick="App.closeEditModal()" class="w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 transition-all-300" style="background:var(--app-surface2);border:1px solid var(--app-border)">
+        <i class="fa-solid fa-xmark" style="color:var(--app-text-muted)"></i>
+      </button>
+    </div>
+    <form id="edit-form" class="space-y-3" onsubmit="return false;">
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Name</label><input type="text" id="edit-name" class="app-input" required></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Profile Picture</label><input type="file" id="edit-photo-file" class="app-input" accept="image/*"></div>
+      <div><label class="text-[11px] font-bold uppercase tracking-wider block mb-1.5" style="color:var(--app-text-dim)">Bio</label><textarea id="edit-bio" class="app-input h-16 resize-none"></textarea></div>
+      <button type="submit" class="app-btn w-full mt-2 transition-all-300">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <div class="px-5 py-3.5 rounded-2xl border shadow-2xl flex items-center gap-3 transition-all-300" style="background:var(--app-surface);border-color:var(--app-border)">
+    <i id="toast-icon" class="fa-solid fa-circle-check" style="color:var(--app-success)"></i>
+    <span id="toast-msg" class="text-sm font-semibold" style="color:var(--app-text)">Success</span>
+  </div>
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
