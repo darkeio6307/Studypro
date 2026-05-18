@@ -1,0 +1,61 @@
+/* Variables & Themes */
+:root, .theme-golden {
+  --app-bg: #0a0a0f;
+  --app-surface: #12121a;
+  --app-surface2: #1a1a25;
+  --app-surface-rgb: 18,18,26;
+  --app-border: #2a2a3a;
+  --app-text: #f0f0f5;
+  --app-text-muted: #b0b0c0;
+  --app-text-dim: #7a7a8a;
+  --app-accent: #D4AF37;
+  --app-accent-soft: rgba(212,175,55,0.12);
+  --app-danger: #ef4444;
+  --app-success: #22c55e;
+}
+.theme-light {
+  --app-bg:#f8fafc; --app-surface:#ffffff; --app-surface2:#f1f5f9; --app-surface-rgb:255,255,255;
+  --app-border:#e2e8f0; --app-text:#0f172a; --app-text-muted:#475569; --app-text-dim:#94a3b8;
+  --app-accent:#b45309; --app-accent-soft:rgba(180,83,9,0.1); --app-danger:#dc2626; --app-success:#16a34a;
+}
+.theme-dark {
+  --app-bg:#09090b; --app-surface:#121214; --app-surface2:#1c1c1f; --app-surface-rgb:18,18,20;
+  --app-border:#27272a; --app-text:#e4e4e7; --app-text-muted:#a1a1aa; --app-text-dim:#71717a;
+  --app-accent:#D4AF37; --app-accent-soft:rgba(212,175,55,0.1); --app-danger:#ef4444; --app-success:#22c55e;
+}
+
+.theme-golden body {
+  background: linear-gradient(135deg, #12121a 0%, #0a0a0f 50%, #08080e 100%);
+}
+.theme-golden .gold-shimmer {
+  background: linear-gradient(135deg, #D4AF37 0%, #f5e6c8 50%, #C0C0C0 100%);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; font-family:'Inter',sans-serif; background:var(--app-bg); color:var(--app-text); overscroll-behavior-y:none; touch-action:manipulation; }
+#main-scroll { overflow-y:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+#main-scroll::-webkit-scrollbar { display:none; }
+
+.app-input { background:var(--app-surface); border:1.5px solid var(--app-border); color:var(--app-text); border-radius:14px; padding:13px 16px; font-size:14px; width:100%; transition:all .25s; outline:none; }
+.app-input:focus { border-color:var(--app-accent); box-shadow:0 0 0 4px var(--app-accent-soft); }
+.app-btn { background:var(--app-accent); color:#1a1100; font-weight:700; border-radius:14px; padding:14px; font-size:14px; border:none; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.app-btn:active { transform:scale(.97); }
+.app-btn-outline { background:transparent; color:var(--app-text); border:1.5px solid var(--app-border); }
+.app-card { background:var(--app-surface); border:1px solid var(--app-border); border-radius:18px; overflow:hidden; }
+.tab-view { visibility:hidden; opacity:0; transform:translateY(16px); transition:all .35s; position:absolute; top:0; left:0; right:0; pointer-events:none; }
+.tab-view.active { visibility:visible; opacity:1; transform:translateY(0); position:relative; pointer-events:auto; }
+.glass-header { background:rgba(var(--app-surface-rgb),.8); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+
+/* VIP Avatar Frames */
+.avatar-frame { border: 3px solid var(--app-border); }
+.avatar-frame.bronze { border-color: #CD7F32; box-shadow: 0 0 10px rgba(205,127,50,0.4); }
+.avatar-frame.silver { border-color: #C0C0C0; box-shadow: 0 0 12px rgba(192,192,192,0.5); }
+.avatar-frame.gold { border-color: #D4AF37; box-shadow: 0 0 15px rgba(212,175,55,0.6); }
+.avatar-frame.founder { border: 4px solid #D4AF37; box-shadow: 0 0 25px rgba(212,175,55,0.8); animation: founderGlow 1.5s ease infinite alternate; }
+@keyframes founderGlow { from { box-shadow: 0 0 15px rgba(212,175,55,0.6); } to { box-shadow: 0 0 30px rgba(255,215,0,0.9); } }
+@keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
