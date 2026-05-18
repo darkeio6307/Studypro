@@ -416,6 +416,15 @@ input[type="file"].app-input { padding: 10px 16px; }
 #homework-view.open { display: flex; opacity: 1; }
 
 /* ===== VIP AVATAR FRAMES ===== */
+/* Bug Fix: Prevent Avatar glow from exploding */
+.avatar-frame-bronze, 
+.avatar-frame-silver, 
+.avatar-frame-gold, 
+.avatar-frame-founder {
+  position: relative !important;
+  z-index: 1;
+}
+
 #avatar-frame-container {
   position: relative;
 }
